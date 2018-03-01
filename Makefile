@@ -12,8 +12,8 @@ AppButton_LDFLAGS = -weak_library $(THEOS)/lib/libactivator.dylib
 AppButton_PRIVATE_FRAMEWORKS = BackBoardServices
 
 include $(THEOS_MAKE_PATH)/tweak.mk
-# SUBPROJECTS += appbuttonprefs
-include $(THEOS_MAKE_PATH)/aggregate.mk
+SUBPROJECTS += appbuttonprefs
+include $(THEOS_MAKE_PATH)/master/aggregate.mk
 
 
 after-install::

@@ -490,7 +490,7 @@ UIVisualEffectView *blurView;
 				if (bundles!=nil && [bundles count]>=1)
         {
 					[self cacheIcons];
-          [[[UIAlertView alloc] initWithTitle:@"Alert" message:[NSString stringWithFormat:@"%@", [bundles objectAtIndex:0]] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+          // [[[UIAlertView alloc] initWithTitle:@"Alert" message:[NSString stringWithFormat:@"%@", [bundles objectAtIndex:0]] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 					[self didPickApplication:[bundles objectAtIndex:0]];
 				}
 			}
