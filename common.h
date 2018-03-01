@@ -37,12 +37,13 @@
 	- (id)getUnmaskedIconImage:(int)arg1;
 	- (id)initWithApplication:(id)arg1;
 @end
-	
+
 @interface SBAppSwitcherModel
 	- (void)removeDisplayItem:(id)arg1;
 	- (void)remove:(id)arg1;
 	+ (id)sharedInstance;
 	- (NSArray *)snapshotOfFlattenedArrayOfAppIdentifiersWhichIsOnlyTemporary;
+	-(id)mainSwitcherDisplayItems;
 @end
 
 @interface SBApplication
@@ -107,7 +108,8 @@
 	+(id)sharedInstance;
 	-(void)clickedMenuButton;
 	-(void)handleMenuDoubleTap;
-	-(void)activateApplicationAnimated:(id)arg1;
+	-(void)activateApplication:(id)arg1;
+	-(void)activateAsssspplication:(id)arg1;
 	-(SBAppSwitcherController *)switcherController;
 @end
 

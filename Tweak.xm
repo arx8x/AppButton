@@ -57,7 +57,7 @@ UIVisualEffectView *blurView;
 %hook SpringBoard
 	- (void)applicationDidFinishLaunching:(id)arg1{
 		%orig;
-		
+
 		if (access("/var/lib/dpkg/info/com.chewmieser.appbutton.list",F_OK)!=-1){
 			appButtonObject=[[AppButton alloc] init];
 		}
@@ -68,7 +68,7 @@ UIVisualEffectView *blurView;
 	+ (id)server;
 	- (void)takeScreenshot;
 @end
-	
+
 	/*@interface UIWindow : UIView
 	- (void)drawRect:(struct CGRect)arg1;
 @end*/
@@ -81,7 +81,7 @@ UIVisualEffectView *blurView;
 		});
 	}
 %end
-	
+
 @implementation ABViewController
 @end
 
@@ -96,15 +96,15 @@ UIVisualEffectView *blurView;
 		}
 		return self;
 	}
-	
+
 	- (void)hideWindow{
 		[abWin setAlpha:0];
 	}
-	
+
 	- (void)showWindow{
 		[abWin setAlpha:1];
 	}
-	
+
 	- (void)loadPrefs{
 		// Setup defaults
 		prefs=[[NSMutableDictionary alloc] initWithObjectsAndKeys:[NSArray arrayWithObjects:[NSNumber numberWithFloat:4.5],[NSNumber numberWithFloat:1.5],nil],@"multiTrayAngles",
@@ -128,21 +128,21 @@ UIVisualEffectView *blurView;
 			[NSNumber numberWithFloat:1.0],@"activeAlpha",
 			nil
 		];
-		
+
 		// Load in prefs
 		CFStringRef appID=CFSTR("com.chewmieser.appbutton");
 		CFPreferencesAppSynchronize(appID);
 		CFArrayRef keyList=CFPreferencesCopyKeyList(appID,kCFPreferencesCurrentUser,kCFPreferencesAnyHost);
-		
+
 		// Handle loaded prefs
 		if (keyList!=nil){
 			NSMutableDictionary *loadedPrefs=(__bridge NSMutableDictionary *)CFPreferencesCopyMultiple(keyList,appID,kCFPreferencesCurrentUser,kCFPreferencesAnyHost);
-			
+
 			// Handle reset case
 			if ([loadedPrefs objectForKey:@"ResetSettings"]!=nil && [(NSNumber *)[loadedPrefs objectForKey:@"ResetSettings"] integerValue]){
 				// Unsert reset case and ignore the remaining load
 				CFPreferencesSetValue(CFSTR("ResetSettings"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-				
+
 				// Reset BOOLS
 				CFPreferencesSetValue(CFSTR("DockToEdge"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 				CFPreferencesSetValue(CFSTR("SwapControls"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
@@ -157,27 +157,27 @@ UIVisualEffectView *blurView;
 				CFPreferencesSetValue(CFSTR("HighlightApp"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 				CFPreferencesSetValue(CFSTR("ActivatorToggleMode"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 				CFPreferencesSetValue(CFSTR("WhitelistNowPlaying"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-				
+
 				// Reset floats
 				CFPreferencesSetValue(CFSTR("RestingAlpha"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 				CFPreferencesSetValue(CFSTR("ActiveAlpha"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-				
+
 				// Reset arrays
 				CFPreferencesSetValue(CFSTR("ABCoordinates"), (__bridge CFPropertyListRef)[NSArray arrayWithObjects:[NSNumber numberWithFloat:40],[NSNumber numberWithFloat:40],nil], appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 				CFPreferencesSetValue(CFSTR("MTTrayValues"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 				CFPreferencesSetValue(CFSTR("favoriteApplications"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 				CFPreferencesSetValue(CFSTR("whitelistApplications"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-				
+
 				// Reset strings
 				CFPreferencesSetValue(CFSTR("SingleTapButton"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 				CFPreferencesSetValue(CFSTR("DoubleTapButton"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-				
+
 				// Reset expirience
 				CFPreferencesSetValue(CFSTR("DidExpirienceHeaderOverlay"), NULL, appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-				
+
 				// Reset window
 				if (abWin!=nil) [abWin setFrame:CGRectMake(40,40,60,60)];
-				
+
 				CFPreferencesAppSynchronize(appID);
 			}else{
 				// Handle BOOLs
@@ -194,46 +194,46 @@ UIVisualEffectView *blurView;
 				if ([loadedPrefs objectForKey:@"HighlightApp"]!=nil) [prefs setObject:[loadedPrefs objectForKey:@"HighlightApp"] forKey:@"highlightApp"];
 				if ([loadedPrefs objectForKey:@"ActivatorToggleMode"]!=nil) [prefs setObject:[loadedPrefs objectForKey:@"ActivatorToggleMode"] forKey:@"toggleMode"];
 				if ([loadedPrefs objectForKey:@"WhitelistNowPlaying"]!=nil) [prefs setObject:[loadedPrefs objectForKey:@"WhitelistNowPlaying"] forKey:@"whitelistNowPlaying"];
-			
+
 				// Handle floats
 				if ([loadedPrefs objectForKey:@"RestingAlpha"]!=nil) [prefs setObject:[loadedPrefs objectForKey:@"RestingAlpha"] forKey:@"restingAlpha"];
 				if ([loadedPrefs objectForKey:@"ActiveAlpha"]!=nil) [prefs setObject:[loadedPrefs objectForKey:@"ActiveAlpha"] forKey:@"activeAlpha"];
-			
+
 				// Handle arrays
 				if ([loadedPrefs objectForKey:@"ABCoordinates"]!=nil) [prefs setObject:[loadedPrefs objectForKey:@"ABCoordinates"] forKey:@"buttonCoordinates"];
 				if ([loadedPrefs objectForKey:@"MTTrayValues"]!=nil) [prefs setObject:[loadedPrefs objectForKey:@"MTTrayValues"] forKey:@"multiTrayAngles"];
 				if ([loadedPrefs objectForKey:@"favoriteApplications"]!=nil) favoriteBundles=[(NSArray *)[loadedPrefs objectForKey:@"favoriteApplications"] mutableCopy];
 				if ([loadedPrefs objectForKey:@"whitelistApplications"]!=nil) [prefs setObject:[loadedPrefs objectForKey:@"whitelistApplications"] forKey:@"whitelistApplications"];
-				
+
 				// Handle strings
 				if ([loadedPrefs objectForKey:@"SingleTapButton"]!=nil) [prefs setObject:[loadedPrefs objectForKey:@"SingleTapButton"] forKey:@"singleTap"];
 				if ([loadedPrefs objectForKey:@"DoubleTapButton"]!=nil) [prefs setObject:[loadedPrefs objectForKey:@"DoubleTapButton"] forKey:@"doubleTap"];
-				
+
 				// Adjust angles
 				if ([loadedPrefs objectForKey:@"MTTrayValues"]!=nil){
 					NSArray *tmp=[prefs objectForKey:@"multiTrayAngles"];
 					[prefs setObject:[NSArray arrayWithObjects:[NSNumber numberWithFloat:convertToRads([(NSNumber *)[tmp objectAtIndex:0] integerValue])],[NSNumber numberWithFloat:convertToRads([(NSNumber *)[tmp objectAtIndex:1] integerValue])],nil] forKey:@"multiTrayAngles"];
 				}
-			
+
 				// Handle minimum allowed alpha
 				if ([loadedPrefs objectForKey:@"RestingAlpha"]!=nil){
 					if ([(NSNumber *)[prefs objectForKey:@"restingAlpha"] floatValue]<0.01) [prefs setObject:[NSNumber numberWithFloat:0.001960785] forKey:@"restingAlpha"];
 				}
 			}
-			
+
 			// Inform our view of changes
 			if (abbv!=nil){
 				[abbv setAlpha:[(NSNumber *)[prefs objectForKey:@"restingAlpha"] floatValue]];
-				
+
 				// Hide the border when hidden
 				if ([(NSNumber *)[prefs objectForKey:@"restingAlpha"] floatValue]<=0.01){
 					[abbv.layer setBorderWidth:0.0];
 				}else{
 					[abbv.layer setBorderWidth:1.0];
 				}
-				
+
 				if (![(NSNumber *)[prefs objectForKey:@"borderEnabled"] intValue]) [abbv.layer setBorderWidth:0.0];
-				
+
 				// Handle color swapping
 				if ([(NSNumber *)[prefs objectForKey:@"blackButton"] intValue]){
 					[abbv setBackgroundColor:[UIColor blackColor]];
@@ -242,24 +242,24 @@ UIVisualEffectView *blurView;
 					[abbv setBackgroundColor:[UIColor whiteColor]];
 					[blurView _setEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
 				}
-				
+
 				if ([(NSNumber *)[prefs objectForKey:@"blurEnabled"] intValue]){
 					[abbv insertSubview:blurView atIndex:0];
 					[abbv setBackgroundColor:[UIColor clearColor]];
 					[blurView setAlpha:1.0];
 				}else{
 					[blurView removeFromSuperview];
-					
+
 					if ([(NSNumber *)[prefs objectForKey:@"blackButton"] intValue]){
 						[abbv setBackgroundColor:[UIColor blackColor]];
 					}else{
 						[abbv setBackgroundColor:[UIColor whiteColor]];
 					}
-					
+
 					[blurView setAlpha:0.0];
 				}
 			}
-			
+
 			if (![self getToggleForKey:@"toggleMode"]){
 				// Peek mode
 				if (abevent!=nil && [abevent hasListenerAssigned]){
@@ -275,34 +275,34 @@ UIVisualEffectView *blurView;
 					}
 				}
 			}
-			
+
 			// Cache favorites
 			[self cacheFavoriteIcons];
 		}
 	}
-	
+
 	- (void)initializeButton{
 		NSArray *coordinates=(NSArray *)[self getPreferenceForKey:@"buttonCoordinates"];
 		abWin=[[ABWindow alloc] initWithFrame:CGRectMake([((NSNumber *)[coordinates objectAtIndex:0]) floatValue],[((NSNumber *)[coordinates objectAtIndex:1]) floatValue],60,60)];
 		abWin.windowLevel=1050;//UIWindowLevelStatusBar+1;//100;//1060;
-		
+
 		if (abevent!=nil && [abevent hasListenerAssigned]){
 			[abWin setAlpha:0.0];
 		}
-		
+
 		// Main view controller
 		ABViewController *primaryVC=[[ABViewController alloc] init];
-		
+
 		abWin.rootViewController=primaryVC;
 		[abWin makeKeyAndVisible];
-		
+
 		// Setting the frame here seems to work...
 		[primaryVC.view setFrame:CGRectMake(0,0,60,60)];
 		[primaryVC.view setAutoresizingMask:UIViewAutoresizingNone];
-		
+
 		// Setup "button"
 		abbv=[[ABButtonView alloc] initWithFrame:CGRectMake(0,0,60,60) andButton:self];
-		
+
 		// Blur it up!
 		UIBlurEffect *blurEffect;
 		if ([(NSNumber *)[prefs objectForKey:@"blackButton"] intValue]){
@@ -310,67 +310,78 @@ UIVisualEffectView *blurView;
 		}else{
 			blurEffect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
 		}
-		
+
 		blurView=[[UIVisualEffectView alloc] initWithEffect:blurEffect];
 		[blurView setFrame:CGRectMake(0,0,60,60)];
 		[blurView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
-		
+
 		if (![self getToggleForKey:@"blurEnabled"]){
 			[blurView setAlpha:0.0];
 		}else{
 			[abbv insertSubview:blurView atIndex:0];
 		}
-		
+
 		[primaryVC.view addSubview:abbv];
 	}
-	
+
 	// Cache running icons
-	- (void)cacheIcons{
-		bundles=[[[%c(SBAppSwitcherModel) sharedInstance] snapshotOfFlattenedArrayOfAppIdentifiersWhichIsOnlyTemporary] mutableCopy];
+	- (void)cacheIcons
+  {
+		bundles=[[[%c(SBAppSwitcherModel) sharedInstance] mainSwitcherDisplayItems] mutableCopy];
 		if (bundles==nil) bundles=[[NSMutableArray alloc] init];
-		
-		NSString *topBundleID=[[NSString alloc] init];
-		SBApplication *sbapp=[((SpringBoard *)[UIApplication sharedApplication]) _accessibilityFrontMostApplication];
-		if (sbapp!=nil){
-			[bundles removeObject:[sbapp bundleIdentifier]];
-			topBundleID=[sbapp bundleIdentifier];
-		}	
-		
+
+		// NSString *topBundleID=[[NSString alloc] init];
+		// SBApplication *sbapp=[((SpringBoard *)[UIApplication sharedApplication]) _accessibilityFrontMostApplication];
+		// if (sbapp!=nil)
+    // {
+		// 	[bundles removeObject:[sbapp bundleIdentifier]];
+		// 	topBundleID=[sbapp bundleIdentifier];
+		// }
+
 		// Load icons
-		theIcons=[[NSMutableArray alloc] init];
+		theIcons = [[NSMutableArray alloc] init];
 		NSMutableArray *forDeletion=[[NSMutableArray alloc] init];
-		for (NSString *bundle in bundles){
-			SBApplication *theApp=[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier:bundle];
+		for (SBDisplayItem *appItem in bundles)
+    {
+      NSString *bundleID = MSHookIvar<NSString *>(appItem, "_displayIdentifier");
+			SBApplication *theApp=[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier:bundleID];
 			NSArray *tags=[theApp tags];
-			
-			if ([theApp tags]!=nil && [tags containsObject:@"hidden"]){
-				[forDeletion addObject:bundle];
-			}else{
+
+			if ([theApp tags]!=nil && [tags containsObject:@"hidden"])
+      {
+				[forDeletion addObject:bundleID];
+			}
+      else
+      {
 				SBApplicationIcon *theAppIcon=[[%c(SBApplicationIcon) alloc] initWithApplication:theApp];
 				UIImage *theImage=[theAppIcon generateIconImage:2];
-				if (theImage!=nil && ![[theApp bundleIdentifier] isEqualToString:topBundleID]){
+				if (theImage!=nil)
+        {
 					[theIcons addObject:theImage];
-				}else{
-					[forDeletion addObject:bundle];
+				}
+        else
+        {
+					[forDeletion addObject:bundleID];
 				}
 			}
 		}
-		
-		for (NSString *bundle in forDeletion){
-			[bundles removeObject:bundle];
+
+		for (NSString *bundleID in forDeletion){
+			[bundles removeObject:bundleID];
 		}
 	}
-	
-	- (void)cacheFavoriteIcons{
+
+	- (void)cacheFavoriteIcons
+  {
 		NSString *topBundleID=[[NSString alloc] init];
 		SBApplication *sbapp=[((SpringBoard *)[UIApplication sharedApplication]) _accessibilityFrontMostApplication];
 		if (sbapp!=nil) topBundleID=[sbapp bundleIdentifier];
-		
+
 		favoriteIcons=[[NSMutableArray alloc] init];
 		if (favoriteBundles==nil) favoriteBundles=[[NSMutableArray alloc] init];
 		filteredFavBundles=[favoriteBundles mutableCopy];
 		[filteredFavBundles removeObject:topBundleID];
-		
+
 		favoriteIcons=[[NSMutableArray alloc] init];
 		for (NSString *bundle in favoriteBundles){
 			SBApplication *theApp=[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier:bundle];
@@ -383,35 +394,41 @@ UIVisualEffectView *blurView;
 			}
 		}
 	}
-	
+
 	- (void)savePosition:(CGPoint)position{
 		NSArray *coordinates=[[NSArray alloc] initWithObjects:[NSNumber numberWithFloat:position.x],[NSNumber numberWithFloat:position.y],nil];
 		CFPreferencesSetValue(CFSTR("ABCoordinates"), (__bridge CFPropertyListRef)coordinates, CFSTR("com.chewmieser.appbutton"), kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 		CFPreferencesAppSynchronize(CFSTR("com.chewmieser.appbutton"));
 	}
-	
-	- (void)didPickApplication:(NSString *)bundle{
+
+	- (void)didPickApplication:(NSString *)bundleID
+  {
 		/*if ([NSFileManager.defaultManager fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/ReachApp.dylib"]){
 			dlopen("/Library/MobileSubstrate/DynamicLibraries/ReachApp.dylib", RTLD_NOW | RTLD_GLOBAL);
 			Class ra=objc_getClass("RAReachabilityManager");
-		
+
 			if (ra!=nil){
 				[[%c(SBReachabilityManager) sharedInstance] _handleReachabilityActivated];
 				[[%c(RAReachabilityManager) sharedInstance] launchTopAppWithIdentifier:bundle];
 			}
 		}*/
-		
-		[[%c(SBUIController) sharedInstance] activateApplicationAnimated:[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier:bundle]];
+    if([bundleID isKindOfClass:[%c(SBDisplayItem) class]])
+    {
+      bundleID = MSHookIvar<NSString *>(bundleID, "_displayIdentifier");
+    }
+    // [[[UIAlertView alloc] initWithTitle:@"Alert" message:bundleID delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+		[[%c(SBUIController) sharedInstance] activateApplication:[[%c(SBApplicationController) sharedInstance] applicationWithBundleIdentifier:bundleID]];
 	}
-	
-	- (void)simulateHomePress{
+
+	- (void)simulateHomePress
+  {
 		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(doSingleTap) object:nil];
-		
+
 		if (didTapDat){
 			didTapDat=NO;
-			
+
 			BOOL didHandleEvent=NO;
-		
+
 			// Activator support
 			if (abevent!=nil){
 			    LAEvent *event=[LAEvent eventWithName:@"com.chewmieser.appbutton.button.double.tapped" mode:[LASharedActivator currentEventMode]];
@@ -420,11 +437,11 @@ UIVisualEffectView *blurView;
 					didHandleEvent=YES;
 				}
 			}
-			
+
 			if (!didHandleEvent){
 				// Handle double tap
 				NSString *toDo=(NSString *)[self getPreferenceForKey:@"doubleTap"];
-			
+
 				if ([toDo isEqualToString:@"LastApp"]){
 					if (bundles!=nil && [bundles count]>=1){
 						[self cacheIcons];
@@ -441,48 +458,58 @@ UIVisualEffectView *blurView;
 			[self performSelector:@selector(doSingleTap) withObject:nil afterDelay:0.25];
 		}
 	}
-	
-	- (void)doSingleTap{
+
+	- (void)doSingleTap
+  {
 		didTapDat=NO;
-		
+
 		BOOL didHandleEvent=NO;
-		
+
 		// Activator support
-		if (abevent!=nil){
-		    LAEvent *event=[LAEvent eventWithName:@"com.chewmieser.appbutton.button.tapped" mode:[LASharedActivator currentEventMode]];
+		if (abevent!=nil)
+    {
+	    LAEvent *event=[LAEvent eventWithName:@"com.chewmieser.appbutton.button.tapped" mode:[LASharedActivator currentEventMode]];
 			[LASharedActivator sendEventToListener:event];
-			if (event.handled){
+			if (event.handled)
+      {
 				didHandleEvent=YES;
 			}
 		}
-		
-		if (!didHandleEvent){
+
+		if (!didHandleEvent)
+    {
 			// Handle single tap
 			NSString *toDo=(NSString *)[self getPreferenceForKey:@"singleTap"];
-		
-			if ([toDo isEqualToString:@"LastApp"]){
-				if (bundles!=nil && [bundles count]>=1){
+
+			if ([toDo isEqualToString:@"LastApp"])
+      {
+				if (bundles!=nil && [bundles count]>=1)
+        {
 					[self cacheIcons];
 					[self didPickApplication:[bundles objectAtIndex:0]];
 				}
-			}else if ([toDo isEqualToString:@"HomePress"]){
+			}
+      else if ([toDo isEqualToString:@"HomePress"])
+      {
 				[[%c(SBUIController) sharedInstance] clickedMenuButton];
-			}else if ([toDo isEqualToString:@"DoubleHome"]){
+			}
+      else if ([toDo isEqualToString:@"DoubleHome"])
+      {
 				[[%c(SBUIController) sharedInstance] handleMenuDoubleTap];
 			}
 		}
 	}
-	
+
 	- (void)stopNotificationCenter{
 		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideAppButton) object:nil];
 		shutUpNotificationCenter=YES;
 	}
-	
+
 	- (void)startNotificationCenter{
 		if (![self getToggleForKey:@"toggleMode"]) [self performSelector:@selector(hideAppButton) withObject:nil afterDelay:0.5];
 		shutUpNotificationCenter=NO;
 	}
-	
+
 	- (void)toggleAppButton{
 		if ([self getToggleForKey:@"toggleMode"]){
 			if (abWin.alpha>0){
@@ -500,7 +527,7 @@ UIVisualEffectView *blurView;
 			[self showAppButton];
 		}
 	}
-	
+
 	- (void)showAppButton{
 		[UIView animateWithDuration:0.25 delay:0.0 options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) animations:^{
 			[abWin setAlpha:1.0];
@@ -508,11 +535,11 @@ UIVisualEffectView *blurView;
 			if (![self getToggleForKey:@"toggleMode"]) [self performSelector:@selector(hideAppButton) withObject:nil afterDelay:2.0];
 		}];
 	}
-	
+
 	- (void)appButtonScreenshotUnhide{
 		[abWin setHidden:NO];
 	}
-	
+
 	- (void)appButtonScreenshotHide{
 		if (abWin.hidden == NO){
 			[abWin setHidden:YES];
@@ -521,7 +548,7 @@ UIVisualEffectView *blurView;
 			});
 		}
 	}
-	
+
 	- (void)hideAppButton{
 		if ((abevent!=nil && [abevent hasListenerAssigned]) || isLocked){
 			[UIView animateWithDuration:0.25 delay:0.0 options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) animations:^{
@@ -530,7 +557,7 @@ UIVisualEffectView *blurView;
 			}];
 		}
 	}
-	
+
 	- (void)updateAppButtonVisibility{
 		if (!shutUpNotificationCenter){
 			if (abevent!=nil && [abevent hasListenerAssigned]){
@@ -540,10 +567,10 @@ UIVisualEffectView *blurView;
 			}
 		}
 	}
-	
+
 	- (void)killAllRunningApplications{
 		NSMutableArray *buns=[bundles mutableCopy];
-		
+
 		if ([self getToggleForKey:@"whitelistNowPlaying"]){
 			int nppid=[((SpringBoard *)[UIApplication sharedApplication]) nowPlayingProcessPID];
 			if (nppid>0){
@@ -551,18 +578,18 @@ UIVisualEffectView *blurView;
 				[buns removeObject:[nowPlayingApp bundleIdentifier]];
 			}
 		}
-		
+
 		for (NSString *b in (NSArray *)[self getPreferenceForKey:@"whitelistApplications"]){
 			[buns removeObject:b];
 		}
-		
+
 		for (NSString *bundle in buns){
 			BKSTerminateApplicationForReasonAndReportWithDescription(bundle, 1, 0, 0);
 			SBAppSwitcherModel *switcherModel=[%c(SBAppSwitcherModel) sharedInstance];
 			[switcherModel removeDisplayItem:[%c(SBDisplayItem) displayItemWithType:@"App" displayIdentifier:bundle]];
 		}
 	}
-	
+
 	// Quick break-out functions
 	- (id)getPreferenceForKey:(NSString *)key{ return [prefs objectForKey:key]; }
 	- (BOOL)getToggleForKey:(NSString *)key{ return [(NSNumber *)[self getPreferenceForKey:key] integerValue]; }
@@ -584,27 +611,27 @@ UIVisualEffectView *blurView;
 		}
 		return self;
 	}
-	
+
 	- (void)checkVisibility{
 		if (appButtonObject!=nil){
 			[appButtonObject performSelector:@selector(updateAppButtonVisibility) withObject:nil afterDelay:0.5];
 		}
 	}
-	
+
 	- (void)activator:(LAActivator *)activator receiveEvent:(LAEvent *)event{
 		if (appButtonObject!=nil){
 			[appButtonObject toggleAppButton];
 		}
-			
+
 		[event setHandled:YES];
 	}
-	
+
 	- (void)activator:(LAActivator *)activator abortEvent:(LAEvent *)event{
 		if (appButtonObject!=nil){
 			[appButtonObject hideAppButton];
 		}
 	}
-	
+
 	- (NSData *)dataForActivatorImageWithScale:(CGFloat)scale{
 		NSData *data;
 		if (scale<2){
@@ -614,50 +641,50 @@ UIVisualEffectView *blurView;
 		}else{
 			data=[NSData dataWithContentsOfFile:@"/Library/PreferenceBundles/appbuttonprefs.bundle/appbuttonprefs@3x.png"];
 		}
-		
+
 		return data;
 	}
-	
+
 	- (NSData *)activator:(LAActivator *)activator requiresIconDataForListenerName:(NSString *)listenerName scale:(CGFloat *)scale{
 		return [self dataForActivatorImageWithScale:*scale];
 	}
-	
+
 	- (NSData *)activator:(LAActivator *)activator requiresSmallIconDataForListenerName:(NSString *)listenerName scale:(CGFloat *)scale{
 		return [self dataForActivatorImageWithScale:*scale];
 	}
-	
+
 	- (UIImage *)activator:(LAActivator *)activator requiresIconForListenerName:(NSString *)listenerName scale:(CGFloat)scale{
 		return [UIImage imageWithData:[self dataForActivatorImageWithScale:scale]];
 	}
-	
+
 	- (UIImage *)activator:(LAActivator *)activator requiresSmallIconForListenerName:(NSString *)listenerName scale:(CGFloat)scale{
 		return [UIImage imageWithData:[self dataForActivatorImageWithScale:scale]];
 	}
-		
+
 	- (BOOL)hasListenerAssigned{
 		NSArray *tmp=[LASharedActivator eventsAssignedToListenerWithName:@"com.chewmieser.appbutton"];
 		return tmp!=nil && [tmp count]>0;
 	}
-	
+
 	- (NSString *)activator:(LAActivator *)activator requiresLocalizedGroupForListenerName:(NSString *)listenerName {
 		return @"AppButton";
 	}
-	
+
 	- (NSString *)activator:(LAActivator *)activator requiresLocalizedTitleForListenerName:(NSString *)listenerName {
 		return LocalizedStringForActivator(@"ACTIVATE_APPBUTTON_LISTENER_TITLE");
 	}
-	
+
 	- (NSString *)activator:(LAActivator *)activator requiresLocalizedDescriptionForListenerName:(NSString *)listenerName {
 		return LocalizedStringForActivator(@"ACTIVATE_APPBUTTON_LISTENER_DESCRIPTION");
 	}
-	
+
 	- (void)activator:(LAActivator *)activator receivePreviewEventForListenerName:(NSString *)listenerName{
 		if (appButtonObject!=nil){
 			[appButtonObject performSelector:@selector(updateAppButtonVisibility) withObject:nil afterDelay:0.5];
 		}
 	}
 @end
-	
+
 @implementation ABEventDataSource
 	- (NSString *)localizedTitleForEventName:(NSString *)eventName{
 		NSString *title;
@@ -666,14 +693,14 @@ UIVisualEffectView *blurView;
 		}else{
 			title=LocalizedStringForActivator(@"EVENT_TAP_BUTTON_TWICE_TITLE");
 		}
-		
+
 		return title;
 	}
- 
+
 	- (NSString *)localizedGroupForEventName:(NSString *)eventName{
 	        return @"AppButton";
 	}
- 
+
 	- (NSString *)localizedDescriptionForEventName:(NSString *)eventName{
 		NSString *title;
 		if ([eventName isEqualToString:@"com.chewmieser.appbutton.button.tapped"]){
@@ -681,7 +708,7 @@ UIVisualEffectView *blurView;
 		}else{
 			title=LocalizedStringForActivator(@"EVENT_TAP_BUTTON_TWICE_DESCRIPTION");
 		}
-		
+
 		return title;
 	}
 @end
@@ -718,26 +745,26 @@ static void DidUnlockDevice(){
 		        DidLockDevice();
 			}
 		});
-	
+
 		// Register for preference notifications
 		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, PreferencesChanged, CFSTR("com.chewmieser.appbutton.prefs-changed"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
-		
+
 		// Look for Activator
 		dlopen("/usr/lib/libactivator.dylib",RTLD_LAZY);
 		Class la=objc_getClass("LAActivator");
-	
+
 		// If found, setup event handler, register listener and watch for libactivator notifications
 		if (la!=nil){
 			abevent=[[ABEventHandler alloc] init];
 			abeventds=[[ABEventDataSource alloc] init];
-		
+
 			[LASharedActivator registerEventDataSource:abeventds forEventName:@"com.chewmieser.appbutton.button.tapped"];
 			[LASharedActivator registerEventDataSource:abeventds forEventName:@"com.chewmieser.appbutton.button.double.tapped"];
-		
+
 			if ([LASharedActivator isRunningInsideSpringBoard]) {
 				[LASharedActivator registerListener:abevent forName:@"com.chewmieser.appbutton"];
 			}
-		
+
 			// Handle unassigned case
 			CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, ActivatorAssignmentChanged, CFSTR("libactivator.assignments.changed"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 		}

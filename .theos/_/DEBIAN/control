@@ -1,0 +1,11 @@
+Package: com.chewmieser.appbutton
+Name: AppButton
+Depends: mobilesubstrate,preferenceloader,applist
+Architecture: iphoneos-arm
+Description: Multitasking at your fingertips
+Maintainer: Steven Rolfe <steve@rolfe.land>
+Author: Steven Rolfe <steve@rolfe.land>
+Section: Tweaks
+Depiction: http://apt.steverolfe.com/depiction/appbutton.html
+Version: 1.1.1.1-14+debug
+Installed-Size: 489
