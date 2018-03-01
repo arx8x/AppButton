@@ -329,7 +329,10 @@ UIVisualEffectView *blurView;
   {
 		bundles=[[[%c(SBAppSwitcherModel) sharedInstance] mainSwitcherDisplayItems] mutableCopy];
 		if (bundles==nil) bundles=[[NSMutableArray alloc] init];
-    [bundles removeObjectAtIndex:0];
+    if([(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication] != nil) // this will be nil if no app on foreground, ie, we're on homescreen or lockscreen
+    {
+      [bundles removeObjectAtIndex:0];
+    }
 
 		// NSString *topBundleID=[[NSString alloc] init];
 		// SBApplication *sbapp=[((SpringBoard *)[UIApplication sharedApplication]) _accessibilityFrontMostApplication];
@@ -487,6 +490,7 @@ UIVisualEffectView *blurView;
 				if (bundles!=nil && [bundles count]>=1)
         {
 					[self cacheIcons];
+          [[[UIAlertView alloc] initWithTitle:@"Alert" message:[NSString stringWithFormat:@"%@", [bundles objectAtIndex:0]] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 					[self didPickApplication:[bundles objectAtIndex:0]];
 				}
 			}
