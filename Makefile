@@ -12,9 +12,9 @@ AppButton_LDFLAGS = -weak_library $(THEOS)/lib/libactivator.dylib
 AppButton_PRIVATE_FRAMEWORKS = BackBoardServices
 
 include $(THEOS_MAKE_PATH)/tweak.mk
-
-SUBPROJECTS += appbuttonprefs
+# SUBPROJECTS += appbuttonprefs
 include $(THEOS_MAKE_PATH)/aggregate.mk
+
 
 after-install::
 	install.exec "killall -9 SpringBoard"

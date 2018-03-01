@@ -329,6 +329,7 @@ UIVisualEffectView *blurView;
   {
 		bundles=[[[%c(SBAppSwitcherModel) sharedInstance] mainSwitcherDisplayItems] mutableCopy];
 		if (bundles==nil) bundles=[[NSMutableArray alloc] init];
+    [bundles removeObjectAtIndex:0];
 
 		// NSString *topBundleID=[[NSString alloc] init];
 		// SBApplication *sbapp=[((SpringBoard *)[UIApplication sharedApplication]) _accessibilityFrontMostApplication];
